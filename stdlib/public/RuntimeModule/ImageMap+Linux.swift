@@ -89,10 +89,13 @@ extension ImageMap {
 
     let wordSize: WordSize
 
-    #if arch(x86_64) || arch(arm64) || arch(arm64_32)
+    #if arch(x86_64) || arch(arm64) || arch(arm64_32) || arch(s390x)
     wordSize = .sixtyFourBit
     #elseif arch(i386) || arch(arm)
     wordSize = .thirtyTwoBit
+    #else
+    // Default to 64-bit for unknown architectures
+    wordSize = .sixtyFourBit
     #endif
 
     let path: String
