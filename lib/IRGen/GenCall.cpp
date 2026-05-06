@@ -1678,7 +1678,7 @@ void SignatureExpansion::expandExternalSignatureTypes() {
     switch (AI.getKind()) {
     case clang::CodeGen::ABIArgInfo::Extend: {
       bool signExt = paramTys[i]->hasSignedIntegerRepresentation();
-      assert((signExt || paramTys[i]->hasUnsignedIntegerRepresentation()) &&
+      assert((signExt || AI.isNoExt() || paramTys[i]->hasUnsignedIntegerRepresentation()) &&
              "Invalid attempt to add extension attribute to argument!");
       Attrs = Attrs.addParamAttribute(IGM.getLLVMContext(), getCurParamIndex(),
                                       attrKindForExtending(signExt));
@@ -4640,7 +4640,7 @@ void CallEmission::externalizeArguments(IRGenFunction &IGF, const Callee &callee
     switch (AI.getKind()) {
     case clang::CodeGen::ABIArgInfo::Extend: {
       bool signExt = clangParamTy->hasSignedIntegerRepresentation();
-      assert((signExt || clangParamTy->hasUnsignedIntegerRepresentation()) &&
+      assert((signExt || AI.isNoExt() || clangParamTy->hasUnsignedIntegerRepresentation()) &&
              "Invalid attempt to add extension attribute to argument!");
       (void) signExt;
       LLVM_FALLTHROUGH;
