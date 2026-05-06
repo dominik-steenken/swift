@@ -31,7 +31,7 @@
 // Android NDK <r21 do not provide `__aeabi_d2h` in the compiler runtime,
 // provide shims in that case.
 #if (defined(__ANDROID__) && defined(__ARM_ARCH_7A__) && defined(__ARM_EABI__)) || \
-  ((defined(__i386__) || defined(__i686__) || defined(__arm__) || defined(__x86_64__)) && !defined(__APPLE__))
+  ((defined(__i386__) || defined(__i686__) || defined(__arm__) || defined(__x86_64__) || defined(__s390x__)) && !defined(__APPLE__))
 
 #include "swift/shims/Visibility.h"
 
@@ -186,6 +186,13 @@ SWIFT_RUNTIME_EXPORT float __extendhfsf2(_Float16 h) {
 // Same again but for __gnu_f2h_ieee
 SWIFT_RUNTIME_EXPORT _Float16 __truncsfhf2(float f) {
   return fromEncoding(__gnu_f2h_ieee(f));
+}
+
+// Convert from Float16 to double.
+// Since Float32 covers the entire range of Float16 values, we can safely
+// convert through float without any rounding issues.
+SWIFT_RUNTIME_EXPORT double __extendhfdf2(_Float16 h) {
+  return (double)__gnu_h2f_ieee(toEncoding(h));
 }
 
 #if defined(__ARM_EABI__)
