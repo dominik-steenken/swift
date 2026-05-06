@@ -26,6 +26,13 @@ import Swift
 // internal import Musl
 // #endif
 
+/// Errors that can occur during backtrace operations.
+@available(Backtracing 6.2, *)
+public enum BacktraceError: Error {
+  /// The current architecture does not support backtrace capture.
+  case unsupportedArchitecture
+}
+
 /// Holds a backtrace.
 @available(Backtracing 6.2, *)
 public struct Backtrace: CustomStringConvertible, Sendable {
@@ -301,6 +308,7 @@ public struct Backtrace: CustomStringConvertible, Sendable {
                              offset: Int = 0,
                              top: Int = 16,
                              images: ImageMap? = nil) throws -> Backtrace {
+    #if arch(x86_64) || arch(i386) || arch(arm64) || arch(arm64_32) || arch(arm)
     #if os(Linux)
     // On Linux, we need the captured images to resolve async functions
     let theImages = images ?? ImageMap.capture()
@@ -319,6 +327,10 @@ public struct Backtrace: CustomStringConvertible, Sendable {
                   offset: offset + 1,
                   top: top)
     }
+    #else
+    // Backtrace capture is not supported on this architecture
+    throw BacktraceError.unsupportedArchitecture
+    #endif
   }
 
   /// Specifies options for the `symbolicated` method.

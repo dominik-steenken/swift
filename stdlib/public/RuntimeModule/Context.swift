@@ -1019,4 +1019,8 @@ private func thread_get_state<T>(_ thread: thread_t,
 @_spi(Contexts) public typealias HostContext = ARM64Context
 #elseif arch(arm)
 @_spi(Contexts) public typealias HostContext = ARMContext
+#else
+// Unsupported architecture - use a placeholder to allow compilation
+// Backtrace functionality will not be available on this architecture
+@_spi(Contexts) public typealias HostContext = X86_64Context
 #endif

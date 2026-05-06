@@ -36,12 +36,14 @@ public struct FramePointerUnwinder<C: Context, M: MemoryReader>: Sequence, Itera
 
   var reader: MemoryReader
 
+  #if arch(x86_64) || arch(i386) || arch(arm64) || arch(arm64_32) || arch(arm)
   @_specialize(exported: true, kind: full, where C == HostContext, M == UnsafeLocalMemoryReader)
   #if os(macOS) || os(Linux)
   @_specialize(exported: true, kind: full, where C == HostContext, M == RemoteMemoryReader)
   #endif
   #if os(Linux)
   @_specialize(exported: true, kind: full, where C == HostContext, M == MemserverMemoryReader)
+  #endif
   #endif
   public init(context: Context,
               images: ImageMap?,
@@ -79,12 +81,14 @@ public struct FramePointerUnwinder<C: Context, M: MemoryReader>: Sequence, Itera
     return false
   }
 
+  #if arch(x86_64) || arch(i386) || arch(arm64) || arch(arm64_32) || arch(arm)
   @_specialize(exported: true, kind: full, where C == HostContext, M == UnsafeLocalMemoryReader)
   #if os(macOS) || os(Linux)
   @_specialize(exported: true, kind: full, where C == HostContext, M == RemoteMemoryReader)
   #endif
   #if os(Linux)
   @_specialize(exported: true, kind: full, where C == HostContext, M == MemserverMemoryReader)
+  #endif
   #endif
   private mutating func isAsyncPC(_ pc: Address) -> Bool {
     // On Linux, we need to examine the PC to see if this is an async frame
@@ -118,12 +122,14 @@ public struct FramePointerUnwinder<C: Context, M: MemoryReader>: Sequence, Itera
     return false
   }
 
+  #if arch(x86_64) || arch(i386) || arch(arm64) || arch(arm64_32) || arch(arm)
   @_specialize(exported: true, kind: full, where C == HostContext, M == UnsafeLocalMemoryReader)
   #if os(macOS) || os(Linux)
   @_specialize(exported: true, kind: full, where C == HostContext, M == RemoteMemoryReader)
   #endif
   #if os(Linux)
   @_specialize(exported: true, kind: full, where C == HostContext, M == MemserverMemoryReader)
+  #endif
   #endif
   private func isAsyncFrame(_ storedFp: Address) -> Bool {
     #if (os(macOS) || os(iOS) || os(watchOS)) && (arch(arm64) || arch(arm64_32) || arch(x86_64))
@@ -135,23 +141,27 @@ public struct FramePointerUnwinder<C: Context, M: MemoryReader>: Sequence, Itera
     #endif
   }
 
+  #if arch(x86_64) || arch(i386) || arch(arm64) || arch(arm64_32) || arch(arm)
   @_specialize(exported: true, kind: full, where C == HostContext, M == UnsafeLocalMemoryReader)
   #if os(macOS) || os(Linux)
   @_specialize(exported: true, kind: full, where C == HostContext, M == RemoteMemoryReader)
   #endif
   #if os(Linux)
   @_specialize(exported: true, kind: full, where C == HostContext, M == MemserverMemoryReader)
+  #endif
   #endif
   private func stripPtrAuth(_ address: Address) -> Address {
     return Context.stripPtrAuth(address: address)
   }
 
+  #if arch(x86_64) || arch(i386) || arch(arm64) || arch(arm64_32) || arch(arm)
   @_specialize(exported: true, kind: full, where C == HostContext, M == UnsafeLocalMemoryReader)
   #if os(macOS) || os(Linux)
   @_specialize(exported: true, kind: full, where C == HostContext, M == RemoteMemoryReader)
   #endif
   #if os(Linux)
   @_specialize(exported: true, kind: full, where C == HostContext, M == MemserverMemoryReader)
+  #endif
   #endif
   private mutating func fetchAsyncContext() -> Bool {
     let strippedFp = stripPtrAuth(fp)
@@ -165,12 +175,14 @@ public struct FramePointerUnwinder<C: Context, M: MemoryReader>: Sequence, Itera
     }
   }
 
+  #if arch(x86_64) || arch(i386) || arch(arm64) || arch(arm64_32) || arch(arm)
   @_specialize(exported: true, kind: full, where C == HostContext, M == UnsafeLocalMemoryReader)
   #if os(macOS) || os(Linux)
   @_specialize(exported: true, kind: full, where C == HostContext, M == RemoteMemoryReader)
   #endif
   #if os(Linux)
   @_specialize(exported: true, kind: full, where C == HostContext, M == MemserverMemoryReader)
+  #endif
   #endif
   public mutating func next() -> RichFrame<Address>? {
     if done {
