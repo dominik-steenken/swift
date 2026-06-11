@@ -246,7 +246,8 @@ foreach(sdk ${SWIFT_SDKS})
                                   "${shared_runtime_registrar}"
                                   "${static_runtime_registrar}"
                                 DEPENDS
-                                  "${swiftrtObject}")
+                                  "${swiftrtObject}"
+                                  swiftImageRegistrationObject${SWIFT_SDK_${sdk}_OBJECT_FORMAT}-${arch_suffix})
       if(SWIFT_BUILD_DYNAMIC_STDLIB AND NOT SWIFT_SDK_${sdk}_STATIC_ONLY)
         swift_install_in_component(FILES
                                      "${shared_runtime_registrar}"
@@ -262,6 +263,15 @@ foreach(sdk ${SWIFT_SDKS})
                                      "lib/swift_static/${arch_subdir}"
                                    COMPONENT
                                      stdlib)
+      endif()
+
+      # For bootstrap builds, ensure swiftrt.o is available before building stdlib
+      if(BOOTSTRAPPING)
+        add_custom_command(TARGET swiftImageRegistration-${arch_suffix} POST_BUILD
+          COMMAND ${CMAKE_COMMAND} -E make_directory "${CMAKE_INSTALL_PREFIX}/lib/swift/${arch_subdir}"
+          COMMAND ${CMAKE_COMMAND} -E copy_if_different "${shared_runtime_registrar}" "${CMAKE_INSTALL_PREFIX}/lib/swift/${arch_subdir}/swiftrt${extension}"
+          COMMENT "Installing swiftrt.o for bootstrap build"
+        )
       endif()
 
       add_dependencies(swift-stdlib-${arch_suffix} ${swiftImageRegistration-${arch_suffix}})
