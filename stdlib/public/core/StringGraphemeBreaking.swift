@@ -214,7 +214,7 @@ extension _StringGuts {
           utf8.baseAddress.unsafelyUnwrapped
         ).loadUnaligned(fromByteOffset: i, as: UInt16.self)
         //& 0x8080 == 0 is "both not ASCII", != 0x0A0D is "not CRLF"
-        return pair & 0x8080 == 0 && pair != 0x0A0D
+        return pair & 0x8080 == 0 && pair != UInt16(0x0A0D).littleEndian
       }
       if _fastPath(fast) {
         _internalInvariant(_opaqueComplexCharacterStride(startingAt: i) == 1)
@@ -262,7 +262,7 @@ extension _StringGuts {
           utf8.baseAddress.unsafelyUnwrapped
         ).loadUnaligned(fromByteOffset: i &- 2, as: UInt16.self)
         //& 0x8080 == 0 is "both not ASCII", != 0x0A0D is "not CRLF"
-        return pair & 0x8080 == 0 && pair != 0x0A0D
+        return pair & 0x8080 == 0 && pair != UInt16(0x0A0D).littleEndian
       }
       if _fastPath(fast) {
         _internalInvariant(_opaqueComplexCharacterStride(endingAt: i) == 1)
