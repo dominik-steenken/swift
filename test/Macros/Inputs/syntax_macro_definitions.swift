@@ -2,7 +2,7 @@ import SwiftDiagnostics
 import SwiftOperators
 @_spi(ExperimentalLanguageFeatures) import SwiftSyntax
 import SwiftSyntaxBuilder
-@_spi(ExperimentalLanguageFeatures) import SwiftSyntaxMacros
+@_spi(ExperimentalLanguageFeature) import SwiftSyntaxMacros
 
 /// Replace the label of the first element in the tuple with the given
 /// new label.
