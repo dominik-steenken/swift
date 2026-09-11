@@ -5942,8 +5942,9 @@ void IRGenSILFunction::emitErrorResultVar(CanSILFunctionType FnTy,
   // swifterror in a register.
   if (IGM.ShouldUseSwiftError)
     return;
-  auto ErrorResultSlot = getCalleeErrorResultSlot(IGM.silConv.getSILType(
-      ErrorInfo, FnTy, IGM.getMaximalTypeExpansionContext()), false);
+  auto ErrorType = CurSILFn->mapTypeIntoEnvironment(
+      IGM.silConv.getSILType(ErrorInfo, FnTy, IGM.getMaximalTypeExpansionContext()));
+  auto ErrorResultSlot = getCalleeErrorResultSlot(ErrorType, false);
   auto Var = DbgValue->getVarInfo();
   assert(Var && "error result without debug info");
   auto Storage =
