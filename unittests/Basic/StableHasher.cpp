@@ -310,13 +310,11 @@ TEST(StableHasher, Vectors) {
   for (unsigned i = 0; i < 16; ++i) {
     k[i] = i;
   }
-  uint64_t one = 0;
-  memcpy(&one, k, sizeof(uint64_t));
-  EXPECT_EQ(one, uint64_t{0x706050403020100});
-
-  uint64_t two = 0;
-  memcpy(&two, k + 8, sizeof(uint64_t));
-  EXPECT_EQ(two, uint64_t{0xF0E0D0C0B0A0908});
+  
+  uint64_t one = U8TO64_LE(k);
+  uint64_t two = U8TO64_LE(k + 8);
+  EXPECT_EQ(one, uint64_t{0x0706050403020100});
+  EXPECT_EQ(two, uint64_t{0x0F0E0D0C0B0A0908});
 
   std::vector<uint8_t> in;
   for (unsigned i = 0; i < 64; ++i) {
