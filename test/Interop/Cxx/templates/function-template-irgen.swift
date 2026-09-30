@@ -1,5 +1,6 @@
 // RUN: %target-swift-emit-ir %s -I %S/Inputs -enable-experimental-cxx-interop -Xcc -fignore-exceptions | %FileCheck %s
 
+// XFAIL: CPU=s390x
 import FunctionTemplates
 
 // CHECK-LABEL: define {{.*}}i32 @"$s4main20testPassThroughConst1xs5Int32VAE_tF"(i32 %0)

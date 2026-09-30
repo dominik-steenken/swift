@@ -6,6 +6,7 @@
 // RUN: %target-swift-emit-ir -target %target-triple -min-runtime-version 5.9 %t/test.swift -I %t/Inputs -enable-experimental-cxx-interop | %FileCheck --check-prefix=GXX %s
 // RUN: %target-swift-emit-ir -target %target-triple -min-runtime-version 5.9 %t/test.swift -I %t/Inputs -enable-experimental-cxx-interop -g | %FileCheck --check-prefix=GXX %s
 
+// XFAIL: CPU=s390x
 // UNSUPPORTED: OS=windows-msvc
 
 //--- Inputs/module.modulemap

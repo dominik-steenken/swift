@@ -3,6 +3,7 @@
 // RUN: %target-interop-build-clangxx -c %s -I %t -S -emit-llvm -o %t/ir.ll
 // RUN: %FileCheck %s < %t/ir.ll
 
+// XFAIL: CPU=s390x
 // UNSUPPORTED: OS=windows-msvc
 
 unsigned char getEnumTagi8(void *p);

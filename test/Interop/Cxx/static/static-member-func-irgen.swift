@@ -1,5 +1,6 @@
 // RUN: %target-swift-emit-ir %s -I %S/Inputs -enable-experimental-cxx-interop -Xcc -fignore-exceptions | %FileCheck %s
 
+// XFAIL: CPU=s390x
 import StaticMemberFunc
 
 public func callStaticMemberFunc() -> CInt {

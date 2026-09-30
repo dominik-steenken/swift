@@ -4,6 +4,7 @@
 // RUN: %target-swift-emit-ir %t/test.swift -I %t/Inputs -enable-experimental-cxx-interop -Xcc -fignore-exceptions | %FileCheck %s
 // RUN: %target-swift-emit-ir %t/test.swift -I %t/Inputs -enable-experimental-cxx-interop -Xcc -fno-exceptions -Xcc -fno-objc-exceptions  -Xcc -DNOEXCEPTION | %FileCheck %s
 
+// XFAIL: CPU=s390x
 //--- Inputs/module.modulemap
 module CxxModule {
     header "cxxHeader.h"

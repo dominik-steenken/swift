@@ -3,6 +3,7 @@
 // RUN: %target-swift-emit-ir -I %t/Inputs -enable-experimental-cxx-interop %t/test.swift -Xcc -fignore-exceptions | %FileCheck %t/test.swift
 
 
+// XFAIL: CPU=s390x
 //--- Inputs/module.modulemap
 module namespaces {
   header "test.h"

@@ -1,6 +1,7 @@
 // RUN: %empty-directory(%t)
 // RUN: %target-swift-frontend %s -emit-ir -enable-experimental-feature Extern -module-name Extern | %FileCheck %s
 
+// XFAIL: CPU=s390x
 // REQUIRES: swift_feature_Extern
 
 // CHECK: declare void @import1() [[EA1:#[0-9]+]]

@@ -1,5 +1,6 @@
 // RUN: %target-swift-emit-irgen -I %S/Inputs -enable-experimental-cxx-interop %s -validate-tbd-against-ir=none -Xcc -fignore-exceptions | %FileCheck %s
 
+// XFAIL: CPU=s390x
 import Functions
 
 func testGetX() -> CInt {

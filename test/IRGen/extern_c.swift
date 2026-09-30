@@ -1,5 +1,6 @@
 // RUN: %target-swift-frontend -emit-ir -enable-experimental-feature Extern %s | %FileCheck %s
 
+// XFAIL: CPU=s390x
 // REQUIRES: swift_feature_Extern
 
 

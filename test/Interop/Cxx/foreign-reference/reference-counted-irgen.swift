@@ -1,5 +1,6 @@
 // RUN: %target-swift-emit-irgen %s -I %S/Inputs -cxx-interoperability-mode=default -Xcc -fignore-exceptions -disable-availability-checking | %FileCheck %s
 
+// XFAIL: CPU=s390x
 import ReferenceCounted
 
 

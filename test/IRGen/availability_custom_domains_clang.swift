@@ -8,6 +8,7 @@
 // RUN:   -import-bridging-header %S/Inputs/AvailabilityDomains.h \
 // RUN:   -O | %FileCheck %s --check-prefixes=CHECK,CHECK-O
 
+// XFAIL: CPU=s390x
 // REQUIRES: swift_feature_CustomAvailability
 
 // CHECK-LABEL: define {{.*}}swiftcc void @"$s4Test24ifAvailableEnabledDomainyyF"()

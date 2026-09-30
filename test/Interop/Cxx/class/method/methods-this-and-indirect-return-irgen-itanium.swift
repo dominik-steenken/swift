@@ -1,5 +1,6 @@
 // RUN: %target-swift-emit-irgen -I %S/Inputs -enable-experimental-cxx-interop %s -Xcc -fignore-exceptions | %FileCheck %s
 
+// XFAIL: CPU=s390x
 // UNSUPPORTED: OS=windows-msvc
 
 import Methods

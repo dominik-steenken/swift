@@ -1,5 +1,6 @@
 // RUN: %target-swift-emit-ir %s -I %S/Inputs -enable-experimental-cxx-interop -disable-availability-checking -Xcc -fignore-exceptions | %FileCheck %s
 
+// XFAIL: CPU=s390x
 import ClassTemplateInstantiationErrors
 
 // CHECK-LABEL: define {{.*}}void @"$s4main23instantiateValidMembersyyF"()

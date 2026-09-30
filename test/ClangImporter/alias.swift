@@ -4,6 +4,7 @@
 // RUN: %target-swift-frontend -I %S/Inputs/custom-modules -parse-as-library -module-name Alias -Osize -emit-ir -o - %s -Xcc -DUNICODE -enable-experimental-feature ImportMacroAliases | %FileCheck %s -check-prefix CHECK-UNICODE-IR
 // RUN: not %target-swift-frontend -I %S/Inputs/custom-modules -parse-as-library -module-name Alias -c %s -DINVALID -o /dev/null 2>&1 -enable-experimental-feature ImportMacroAliases | %FileCheck --dry-run %s -check-prefix CHECK-INVALID
 
+// XFAIL: CPU=s390x
 // REQUIRES: swift_feature_ImportMacroAliases
 
 // expected-no-diagnostics

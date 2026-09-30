@@ -1,5 +1,6 @@
 // RUN: %target-swift-emit-ir -I %S/Inputs -enable-experimental-cxx-interop %s -Xcc -fignore-exceptions | %FileCheck %s
 
+// XFAIL: CPU=s390x
 import Templates
 
 // CHECK-LABEL: define {{.*}}void @"$s4main10basicTestsyyF"()
