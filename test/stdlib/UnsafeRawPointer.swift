@@ -123,7 +123,7 @@ UnsafeMutableRawPointerExtraTestSuite.test("load.unaligned")
     $0[0] = 0
     return $0.loadUnaligned(fromByteOffset: 1, as: UInt32.self)
   }
-  expectEqual(result, 0xffff_0000)
+  expectEqual(UInt32(littleEndian: result), 0xffff_0000)
 }
 
 #if !os(WASI)

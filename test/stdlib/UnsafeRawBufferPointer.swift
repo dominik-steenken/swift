@@ -665,14 +665,14 @@ UnsafeRawBufferPointerTestSuite.test("store.invalid")
 
 UnsafeRawBufferPointerTestSuite.test("store.valid") {
   let value32 = UInt32.max
-  var value64 = Int64.zero
+  var value64 = UInt64.zero
   withUnsafeMutableBytes(of: &value64) {
     $0.storeBytes(of: value32, toByteOffset: MemoryLayout<UInt32>.stride, as: UInt32.self)
   }
 #if _endian(little)
-  expectEqual(value64, 0xffffffff << 32)   // bytes 4..7 are the high word
+  expectEqual(value64, UInt64(0xffffffff) << 32) // bytes 4..7 are the high word
 #else
-  expectEqual(value64, UInt64(UInt32.max)) // bytes 4..7 are the low word
+  expectEqual(value64, UInt64(UInt32.max))       // bytes 4..7 are the low word
 #endif
 }
 
