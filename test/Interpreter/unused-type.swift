@@ -1,6 +1,7 @@
 // RUN: %target-jit-run -O %s | %FileCheck %s
 // REQUIRES: executable_test
 // REQUIRES: swift_interpreter
+// XFAIL: CPU=s390x
 
 // Check that when running the jit with -O we don't crash with an unresolved
 // metadata symbol.

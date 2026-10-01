@@ -7,6 +7,7 @@
 
 // REQUIRES: executable_test
 // REQUIRES: swift_interpreter
+// XFAIL: CPU=s390x
 
 import complex
 

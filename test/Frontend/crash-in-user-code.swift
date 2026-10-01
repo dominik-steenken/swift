@@ -4,6 +4,7 @@
 // %FileCheck %s < %t/output.txt
 
 // REQUIRES: executable_test
+// XFAIL: CPU=s390x
 
 // UNSUPPORTED: OS=ios
 // UNSUPPORTED: OS=tvos

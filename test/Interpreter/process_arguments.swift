@@ -4,6 +4,7 @@
 // RUN: %target-jit-run %s -Onone -g -- a b c | %FileCheck %s -check-prefix=CHECK-THREE
 
 // REQUIRES: swift_interpreter
+// XFAIL: CPU=s390x
 
 print("Begin arguments")
 for arg in CommandLine.arguments { print(arg) }

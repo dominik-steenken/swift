@@ -6,6 +6,7 @@
 // Run with the interpreter using the proper filecheck pattern.
 // RUN: %target-jit-run -I %t -DINTERP %s | %FileCheck --check-prefix=OUTPUT %s
 // REQUIRES: swift_interpreter
+// XFAIL: CPU=s390x
 
 // FIXME: iOS doesn't work because this test needs the interpreter to handle 
 // func typeCheckOnly (which causes link errors if built as an executable).

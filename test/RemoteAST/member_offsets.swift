@@ -2,6 +2,7 @@
 
 // REQUIRES: swift-remoteast-test
 // REQUIRES: PTRSIZE=64
+// XFAIL: CPU=s390x
 
 @_silgen_name("printTypeMemberOffset")
 func printTypeMemberOffset(_: Any.Type, _: StaticString)

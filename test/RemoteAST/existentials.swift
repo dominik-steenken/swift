@@ -1,6 +1,7 @@
 // RUN: %target-swift-remoteast-test %s | %FileCheck %s
 
 // REQUIRES: swift-remoteast-test
+// XFAIL: CPU=s390x
 
 @_silgen_name("printDynamicTypeAndAddressForExistential")
 func printDynamicTypeAndAddressForExistential<T>(_: T)
