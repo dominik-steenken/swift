@@ -12,6 +12,7 @@
 // LLVM does not support swifttailcc for WebAssembly target for now
 // See https://github.com/apple/swift/issues/69333
 // UNSUPPORTED: CPU=wasm32
+// XFAIL: CPU=s390x
 
 import _Concurrency
 
