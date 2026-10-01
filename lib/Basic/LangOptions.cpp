@@ -445,9 +445,12 @@ void LangOptions::setHasAtomicBitWidth(llvm::Triple triple) {
     setMaxAtomicBitWidth(64);
     break;
 
-  // SystemZ (s390x) does not support double word atomics.
+  // SystemZ (s390x) supports 128-bit double-word atomics via the CDSG
+  // (Compare Double and Swap Guardword) instruction, available since z10.
+  // All Linux-on-Z platforms supported by Swift (z13+) have CDSG, and
+  // LLVM already lowers i128 atomic operations to CDSG/LPQ/STPQ.
   case llvm::Triple::ArchType::systemz:
-    setMaxAtomicBitWidth(64);
+    setMaxAtomicBitWidth(128);
     break;
 
   // Wasm32 supports double word atomics.
