@@ -10,7 +10,7 @@
 //
 //===----------------------------------------------------------------------===//
 
-#if (os(macOS) || os(Linux)) && (arch(x86_64) || arch(arm64))
+#if (os(macOS) || os(Linux)) && (arch(x86_64) || arch(arm64) || arch(s390x))
 
 #if canImport(Darwin)
 import Darwin
@@ -1481,6 +1481,13 @@ Generate a backtrace for the parent process.
     showGPR(name: "sp", context: context, register: .r13)
     showGPR(name: "lr", context: context, register: .r14)
     showGPR(name: "pc", context: context, register: .r15)
+  }
+
+  static func showRegisters(_ context: S390xContext) {
+    showGPRs(context, range: .r0 ... .r13)
+    showGPR(name: "r14 (lr)", context: context, register: .r14)
+    showGPR(name: "r15 (sp)", context: context, register: .r15)
+    showRegister(name: "pc", value: context.programCounter)
   }
 }
 

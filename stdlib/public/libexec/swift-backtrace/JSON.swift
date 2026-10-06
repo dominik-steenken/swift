@@ -26,6 +26,8 @@ import CRT
 @_spi(Internal) import Runtime
 @_spi(MemoryReaders) import Runtime
 
+#if (os(macOS) || os(Linux)) && (arch(x86_64) || arch(arm64) || arch(s390x))
+
 extension SwiftBacktrace {
 
   static func outputJSONCrashLog() {
@@ -139,6 +141,13 @@ extension SwiftBacktrace {
       outputJSONRegister(name: "sp", context: context, register: .r13)
       outputJSONRegister(name: "lr", context: context, register: .r14)
       outputJSONRegister(name: "pc", context: context, register: .r15)
+    }
+
+    func outputJSONRegisterDump(_ context: S390xContext) {
+      outputJSONGPRs(context, range: .r0 ... .r13)
+      outputJSONRegister(name: "r14", context: context, register: .r14)
+      outputJSONRegister(name: "r15", context: context, register: .r15)
+      outputJSONRegister(name: "pc", value: context.programCounter)
     }
 
     func outputJSONThread(ndx: Int, thread: TargetThread) {
@@ -370,3 +379,5 @@ extension SwiftBacktrace {
   }
 
 }
+
+#endif // (os(macOS) || os(Linux)) && (arch(x86_64) || arch(arm64) || arch(s390x))

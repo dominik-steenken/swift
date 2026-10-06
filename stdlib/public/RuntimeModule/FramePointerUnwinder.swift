@@ -36,7 +36,7 @@ public struct FramePointerUnwinder<C: Context, M: MemoryReader>: Sequence, Itera
 
   var reader: MemoryReader
 
-  #if arch(x86_64) || arch(i386) || arch(arm64) || arch(arm64_32) || arch(arm)
+  #if arch(x86_64) || arch(i386) || arch(arm64) || arch(arm64_32) || arch(arm) || arch(s390x)
   @_specialize(exported: true, kind: full, where C == HostContext, M == UnsafeLocalMemoryReader)
   #if os(macOS) || os(Linux)
   @_specialize(exported: true, kind: full, where C == HostContext, M == RemoteMemoryReader)
@@ -81,7 +81,7 @@ public struct FramePointerUnwinder<C: Context, M: MemoryReader>: Sequence, Itera
     return false
   }
 
-  #if arch(x86_64) || arch(i386) || arch(arm64) || arch(arm64_32) || arch(arm)
+  #if arch(x86_64) || arch(i386) || arch(arm64) || arch(arm64_32) || arch(arm) || arch(s390x)
   @_specialize(exported: true, kind: full, where C == HostContext, M == UnsafeLocalMemoryReader)
   #if os(macOS) || os(Linux)
   @_specialize(exported: true, kind: full, where C == HostContext, M == RemoteMemoryReader)
@@ -122,7 +122,7 @@ public struct FramePointerUnwinder<C: Context, M: MemoryReader>: Sequence, Itera
     return false
   }
 
-  #if arch(x86_64) || arch(i386) || arch(arm64) || arch(arm64_32) || arch(arm)
+  #if arch(x86_64) || arch(i386) || arch(arm64) || arch(arm64_32) || arch(arm) || arch(s390x)
   @_specialize(exported: true, kind: full, where C == HostContext, M == UnsafeLocalMemoryReader)
   #if os(macOS) || os(Linux)
   @_specialize(exported: true, kind: full, where C == HostContext, M == RemoteMemoryReader)
@@ -141,7 +141,7 @@ public struct FramePointerUnwinder<C: Context, M: MemoryReader>: Sequence, Itera
     #endif
   }
 
-  #if arch(x86_64) || arch(i386) || arch(arm64) || arch(arm64_32) || arch(arm)
+  #if arch(x86_64) || arch(i386) || arch(arm64) || arch(arm64_32) || arch(arm) || arch(s390x)
   @_specialize(exported: true, kind: full, where C == HostContext, M == UnsafeLocalMemoryReader)
   #if os(macOS) || os(Linux)
   @_specialize(exported: true, kind: full, where C == HostContext, M == RemoteMemoryReader)
@@ -154,7 +154,7 @@ public struct FramePointerUnwinder<C: Context, M: MemoryReader>: Sequence, Itera
     return Context.stripPtrAuth(address: address)
   }
 
-  #if arch(x86_64) || arch(i386) || arch(arm64) || arch(arm64_32) || arch(arm)
+  #if arch(x86_64) || arch(i386) || arch(arm64) || arch(arm64_32) || arch(arm) || arch(s390x)
   @_specialize(exported: true, kind: full, where C == HostContext, M == UnsafeLocalMemoryReader)
   #if os(macOS) || os(Linux)
   @_specialize(exported: true, kind: full, where C == HostContext, M == RemoteMemoryReader)
@@ -175,7 +175,7 @@ public struct FramePointerUnwinder<C: Context, M: MemoryReader>: Sequence, Itera
     }
   }
 
-  #if arch(x86_64) || arch(i386) || arch(arm64) || arch(arm64_32) || arch(arm)
+  #if arch(x86_64) || arch(i386) || arch(arm64) || arch(arm64_32) || arch(arm) || arch(s390x)
   @_specialize(exported: true, kind: full, where C == HostContext, M == UnsafeLocalMemoryReader)
   #if os(macOS) || os(Linux)
   @_specialize(exported: true, kind: full, where C == HostContext, M == RemoteMemoryReader)

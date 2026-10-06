@@ -308,7 +308,7 @@ public struct Backtrace: CustomStringConvertible, Sendable {
                              offset: Int = 0,
                              top: Int = 16,
                              images: ImageMap? = nil) throws -> Backtrace {
-    #if arch(x86_64) || arch(i386) || arch(arm64) || arch(arm64_32) || arch(arm)
+    #if arch(x86_64) || arch(i386) || arch(arm64) || arch(arm64_32) || arch(arm) || arch(s390x)
     #if os(Linux)
     // On Linux, we need the captured images to resolve async functions
     let theImages = images ?? ImageMap.capture()

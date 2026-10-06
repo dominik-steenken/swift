@@ -39,6 +39,7 @@ typealias x86_64_gprs = swift.runtime.backtrace.x86_64_gprs
 typealias i386_gprs = swift.runtime.backtrace.i386_gprs
 typealias arm64_gprs = swift.runtime.backtrace.arm64_gprs
 typealias arm_gprs = swift.runtime.backtrace.arm_gprs
+typealias s390x_gprs = swift.runtime.backtrace.s390x_gprs
 
 @_spi(Contexts) public enum ContextError: Error {
   case unableToFormTLSAddress
@@ -1007,6 +1008,157 @@ private func thread_get_state<T>(_ thread: thread_t,
 }
 #endif
 
+// .. s390x ....................................................................
+
+@_spi(Contexts) public struct S390xContext: Context {
+  public typealias Address = UInt64
+  public typealias Size = UInt64
+  public typealias GPRValue = UInt64
+  public typealias Register = S390xRegister
+
+  var gprs = s390x_gprs()
+
+  public var architecture: String { "s390x" }
+
+  // r15 is the stack pointer on s390x
+  public var stackPointer: GPRValue {
+    get { return gprs.getR(S390xRegister.r15.rawValue) }
+    set { gprs.setR(S390xRegister.r15.rawValue, to: newValue) }
+  }
+
+  // r11 is the frame pointer by convention
+  public var framePointer: GPRValue {
+    get { return gprs.getR(S390xRegister.r11.rawValue) }
+    set { gprs.setR(S390xRegister.r11.rawValue, to: newValue) }
+  }
+
+  // The CFA on s390x is SP+160 per the s390x ELF ABI §1.6.3.
+  // The 160-byte register save area is always allocated by the caller,
+  // so the CFA points to the caller's stack frame base.
+  public var callFrameAddress: GPRValue {
+    get { return stackPointer &+ 160 }
+    set { stackPointer = newValue &- 160 }
+  }
+
+  // The program counter is the PSW address captured from the signal context
+  public var programCounter: GPRValue {
+    get { return gprs.psw_addr }
+    set { gprs.psw_addr = newValue }
+  }
+
+  // r0–r15 = DWARF registers 0–15
+  public static var registerCount: Int { return 16 }
+
+  public static func isAlignedForStack(framePointer: Address) -> Bool {
+    // s390x stack must be 8-byte aligned
+    return (framePointer & 7) == 0
+  }
+
+  #if os(Linux) && arch(s390x)
+  init(with mctx: mcontext_t) {
+    withUnsafeMutablePointer(to: &gprs._r) {
+      $0.withMemoryRebound(to: UInt64.self, capacity: 16) { to in
+        withUnsafePointer(to: mctx.gregs) {
+          $0.withMemoryRebound(to: UInt64.self, capacity: 16) { from in
+            for n in 0..<16 {
+              to[n] = from[n]
+            }
+          }
+        }
+      }
+    }
+    gprs.psw_addr = UInt64(mctx.psw.addr)
+    gprs.valid = 0x1ffff
+  }
+
+  public static func fromHostMContext(_ mcontext: Any) -> HostContext {
+    return S390xContext(with: mcontext as! mcontext_t)
+  }
+  #endif
+
+  #if os(Windows) || !SWIFT_ASM_AVAILABLE
+  struct NotImplemented: Error {}
+  public static func withCurrentContext<T>(fn: (S390xContext) throws -> T) throws -> T {
+    throw NotImplemented()
+  }
+  #elseif arch(s390x)
+  @usableFromInline
+  @_silgen_name("_swift_get_cpu_context")
+  static func _swift_get_cpu_context() -> S390xContext
+
+  @_transparent
+  public static func withCurrentContext<T>(fn: (S390xContext) throws -> T) rethrows -> T {
+    return try fn(_swift_get_cpu_context())
+  }
+  #endif
+
+  private func isValid(_ register: Register) -> Bool {
+    if register.rawValue < 16 {
+      return (gprs.valid & (UInt64(1) << register.rawValue)) != 0
+    }
+    return false
+  }
+
+  private mutating func setValid(_ register: Register) {
+    if register.rawValue < 16 {
+      gprs.valid |= UInt64(1) << register.rawValue
+    }
+  }
+
+  private mutating func clearValid(_ register: Register) {
+    if register.rawValue < 16 {
+      gprs.valid &= ~(UInt64(1) << register.rawValue)
+    }
+  }
+
+  public func getRegister(_ register: Register) -> GPRValue? {
+    if !isValid(register) {
+      return nil
+    }
+    return gprs.getR(register.rawValue)
+  }
+
+  public mutating func setRegister(_ register: Register, to value: GPRValue?) {
+    if let value = value {
+      gprs.setR(register.rawValue, to: value)
+      setValid(register)
+    } else {
+      clearValid(register)
+    }
+  }
+
+  public var description: String {
+    var result = "S390xContext(\n"
+    for reg in S390xRegister.r0 ... S390xRegister.r15 {
+      if let val = getRegister(reg) {
+        result += "  \(reg): 0x\(String(val, radix: 16))\n"
+      }
+    }
+    result += "  pc: 0x\(String(programCounter, radix: 16))\n"
+    result += ")"
+    return result
+  }
+}
+
+extension s390x_gprs {
+  func getR(_ ndx: Int) -> UInt64 {
+    return withUnsafePointer(to: _r) {
+      $0.withMemoryRebound(to: UInt64.self, capacity: 16) {
+        $0[ndx]
+      }
+    }
+  }
+
+  mutating func setR(_ ndx: Int, to value: UInt64) {
+    withUnsafeMutablePointer(to: &_r) {
+      $0.withMemoryRebound(to: UInt64.self, capacity: 16) {
+        $0[ndx] = value
+      }
+    }
+    valid |= 1 << ndx
+  }
+}
+
 // .. HostContext ..............................................................
 
 /// HostContext is an alias for the appropriate context for the machine on which
@@ -1019,6 +1171,8 @@ private func thread_get_state<T>(_ thread: thread_t,
 @_spi(Contexts) public typealias HostContext = ARM64Context
 #elseif arch(arm)
 @_spi(Contexts) public typealias HostContext = ARMContext
+#elseif arch(s390x)
+@_spi(Contexts) public typealias HostContext = S390xContext
 #else
 // Unsupported architecture - use a placeholder to allow compilation
 // Backtrace functionality will not be available on this architecture

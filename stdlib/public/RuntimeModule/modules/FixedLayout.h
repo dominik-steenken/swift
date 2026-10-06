@@ -53,6 +53,12 @@ struct arm_gprs {
   uint32_t valid;
 };
 
+struct s390x_gprs {
+  uint64_t _r[16];
+  uint64_t psw_addr;
+  uint64_t valid;
+};
+
 #ifdef __cplusplus
 } // namespace backtrace
 } // namespace runtime

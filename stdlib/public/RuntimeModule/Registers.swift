@@ -575,6 +575,42 @@ case htpidpr = 323
   // 8192-16383 are for vendor co-processors
 }
 
+// .. s390x .................................................................
+
+// https://github.com/IBM/s390x-abi
+// DWARF register numbers: r0–r15 = 0–15
+@_spi(Registers) public enum S390xRegister: Int, Strideable, Comparable {
+
+  public func advanced(by n: Int) -> S390xRegister {
+    return S390xRegister(rawValue: self.rawValue + n)!
+  }
+
+  public func distance(to other: S390xRegister) -> Int {
+    return other.rawValue - self.rawValue
+  }
+
+  public static func < (lhs: Self, rhs: Self) -> Bool {
+    return lhs.rawValue < rhs.rawValue
+  }
+
+case r0  = 0
+case r1  = 1
+case r2  = 2
+case r3  = 3
+case r4  = 4
+case r5  = 5
+case r6  = 6
+case r7  = 7
+case r8  = 8
+case r9  = 9
+case r10 = 10
+case r11 = 11
+case r12 = 12
+case r13 = 13
+case r14 = 14
+case r15 = 15
+}
+
 #if arch(x86_64)
 @_spi(Registers) public typealias HostRegister = X86_64Register
 #elseif arch(i386)
@@ -583,4 +619,6 @@ case htpidpr = 323
 @_spi(Registers) public typealias HostRegister = ARM64Register
 #elseif arch(arm)
 @_spi(Registers) public typealias HostRegister = ARMRegister
+#elseif arch(s390x)
+@_spi(Registers) public typealias HostRegister = S390xRegister
 #endif
