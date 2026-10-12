@@ -73,7 +73,7 @@ TEST(ClangImporterTest, emitPCHInMemory) {
 
   // Set up the importer and emit a bridging PCH.
   swift::LangOptions langOpts;
-  langOpts.Target = llvm::Triple("x86_64", "apple", "darwin");
+  langOpts.Target = llvm::Triple(llvm::sys::getDefaultTargetTriple());
   swift::SILOptions silOpts;
   swift::TypeCheckerOptions typecheckOpts;
   INITIALIZE_LLVM();
@@ -121,9 +121,8 @@ static StringRef getLibstdcxxModulemapContents() {
 struct LibStdCxxInjectionVFS {
   llvm::IntrusiveRefCntPtr<llvm::vfs::InMemoryFileSystem> vfs;
 
-  LibStdCxxInjectionVFS(const llvm::Triple &triple = llvm::Triple("x86_64",
-                                                                  "redhat",
-                                                                  "linux")) {
+  LibStdCxxInjectionVFS(const llvm::Triple &triple = llvm::Triple(
+                            llvm::sys::getDefaultTargetTriple());) {
     vfs = new llvm::vfs::InMemoryFileSystem;
     tripleString =
         llvm::Twine(triple.getArchName() + "-" + triple.getVendorName() + "-" +
