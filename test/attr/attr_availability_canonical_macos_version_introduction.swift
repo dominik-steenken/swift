@@ -1,4 +1,4 @@
-// RUN: %swift -typecheck -verify -parse-stdlib -module-name Swift -target %target-cpu-apple-macosx10.15 %s
+// RUN: %swift -typecheck -verify -parse-stdlib -module-name Swift -target x86_64-apple-macosx10.15 %s
 
 @available(OSX, introduced: 10.16)
 func longFormIntroducedIn10_16() { }

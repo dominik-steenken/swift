@@ -1,8 +1,8 @@
-// RUN: %target-typecheck-verify-swift -parse-stdlib -enable-experimental-feature AnyAppleOSAvailability -target %target-cpu-apple-macos26 -verify-additional-prefix apple- -verify-additional-prefix macos-
-// RUN: %target-typecheck-verify-swift -parse-stdlib -enable-experimental-feature AnyAppleOSAvailability -target %target-cpu-apple-ios26 -verify-additional-prefix apple- -verify-additional-prefix ios-
-// RUN: %target-typecheck-verify-swift -parse-stdlib -enable-experimental-feature AnyAppleOSAvailability -target %target-cpu-apple-watchos26 -verify-additional-prefix apple- -verify-additional-prefix watchos-
-// RUN: %target-typecheck-verify-swift -parse-stdlib -enable-experimental-feature AnyAppleOSAvailability -target %target-cpu-apple-tvos26 -verify-additional-prefix apple- -verify-additional-prefix tvos-
-// RUN: %target-typecheck-verify-swift -parse-stdlib -enable-experimental-feature AnyAppleOSAvailability -target %target-cpu-apple-visionos26 -verify-additional-prefix apple- -verify-additional-prefix visionos-
+// RUN: %target-typecheck-verify-swift -parse-stdlib -enable-experimental-feature AnyAppleOSAvailability -target arm64-apple-macos26 -verify-additional-prefix apple- -verify-additional-prefix macos-
+// RUN: %target-typecheck-verify-swift -parse-stdlib -enable-experimental-feature AnyAppleOSAvailability -target arm64-apple-ios26 -verify-additional-prefix apple- -verify-additional-prefix ios-
+// RUN: %target-typecheck-verify-swift -parse-stdlib -enable-experimental-feature AnyAppleOSAvailability -target arm64-apple-watchos26 -verify-additional-prefix apple- -verify-additional-prefix watchos-
+// RUN: %target-typecheck-verify-swift -parse-stdlib -enable-experimental-feature AnyAppleOSAvailability -target arm64-apple-tvos26 -verify-additional-prefix apple- -verify-additional-prefix tvos-
+// RUN: %target-typecheck-verify-swift -parse-stdlib -enable-experimental-feature AnyAppleOSAvailability -target arm64-apple-visionos26 -verify-additional-prefix apple- -verify-additional-prefix visionos-
 // RUN: %target-typecheck-verify-swift -parse-stdlib -enable-experimental-feature AnyAppleOSAvailability -target x86_64-unknown-linux-gnu
 // RUN: %target-typecheck-verify-swift -parse-stdlib -enable-experimental-feature AnyAppleOSAvailability -target x86_64-unknown-windows-msvc
 

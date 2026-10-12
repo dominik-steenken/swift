@@ -1,3 +1,5 @@
+// REQUIRES: CODEGENERATOR=AArch64
+
 // RUN: %empty-directory(%t)
 // RUN: %target-swift-frontend -emit-module -module-name ClangTargetModule -emit-module-path %t/has_clang_target.swiftmodule -parse-as-library -serialize-debugging-options -clang-target arm64e-apple-macos12.12 %s
 
